@@ -1,0 +1,56 @@
+import pygame
+import os
+pygame.font.init()
+pygame.mixer.init()
+HEIGHT = 500
+WIDTH = 900
+Win = pygame.display.set_mode((WIDTH,HEIGHT))
+TITLE = pygame.display.set_caption("Space Invaders")
+white = (255,255,255)
+red = (255,0,0)
+black = (0,0,0)
+yellow = (255,255,0)
+border = pygame.Rect(WIDTH//2-5,0,10,HEIGHT)
+healthfont = pygame.font.SysFont("Comicsans",40)
+winnerfont = pygame.font.SysFont("Comicsane",100)
+fps = 60
+vel = 5
+bullet_vel = 7
+max_bullets = 3
+spaceship_width, spaceship_height = 55,40
+yellow_hit = pygame.USEREVENT+1
+red_hit = pygame.USEREVENT+2
+yellow_spaceship_image = pygame.image.load(os.path.join("Yellow Rocket Ship.png"))
+yellow_spaceship = pygame.transform.rotate(pygame.transform.scale(yellow_spaceship_image,(spaceship_width,spaceship_height)),90)
+red_spaceship_image = pygame.image.load(os.path.join("Red Rocket Ship.png"))
+red_spaceship = pygame.transform.rotate(pygame.transform.scale(red_spaceship_image,(spaceship_width,spaceship_height)),270)
+space = pygame.transform.scale(pygame.image.load(os.path.join("images","space.png")),(WIDTH,HEIGHT)) 
+def draw_window(red,yellow,redbullets,yellowbullets,redhealth,yellowhealth):
+    Win.blit(space,(0,0))
+    pygame.draw.rect(Win,black,border)
+    redhealth_text = healthfont.render("health:"+str(redhealth)),1,white
+    yellowhealth_text = healthfont.render("health:"+str(yellowhealth)),1,white
+    Win.blit(redhealth_text,(WIDTH - redhealth_text.get_width()- 10,10))
+    Win.blit(yellowhealth_text,(10,10))
+    Win.blit(yellow_spaceship,(yellow.x,yellow.y))
+    Win.blit(red_spaceship,(red.x,red.y))
+    for bullet in redbullets:
+        pygame.draw.rect(Win,red,bullet)
+    for bullet in yellowbullets:
+        pygame.draw.rect(Win,yellow,bullet)
+    pygame.display.update()
+
+def yellow_handle_movement(keys_pressed,yellow):
+    if keys_pressed[pygame.K_a] and yellow.x - vel > 0:
+        yellow.x -= vel
+    if keys_pressed[pygame.K_d] and yellow.x + vel + yellow.width < border.x:
+        yellow.x += vel
+    if keys_pressed[pygame.K_w] and yellow.y - vel > 0:
+        yellow.y -= vel
+    if keys_pressed[pygame.K_s] and yellow.y - vel > 0:
+        yellow.y -= vel
+    
+    
+    
+    
+
