@@ -1,0 +1,31 @@
+import pygame
+screen = pygame.display.set_mode((600, 600))
+TITLE = "Sprites in pygame" 
+pygame.display.set_caption(TITLE)
+player = pygame.image.load("Rocket.png")
+background = pygame.image.load("space.png")
+class Rocket(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        super().__init__()
+        self.image = player
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+rocket1 = Rocket(0,0)
+GOS = pygame.sprite.Group()
+GOS.add(rocket1)
+
+
+        
+
+
+run = True
+while run == True:
+    screen.blit(background, (0, 0))
+    GOS.draw(screen)
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+        
+    pygame.display.update()
