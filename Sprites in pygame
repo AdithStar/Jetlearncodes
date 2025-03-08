@@ -11,21 +11,42 @@ class Rocket(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+    def move(self):
+        keys_pressed = pygame.key.get_pressed()
+        if keys_pressed[pygame.K_a]:
+            self.rect.x -= 4
+        if keys_pressed[pygame.K_d]:
+            self.rect.x += 4
+        if keys_pressed[pygame.K_w]:
+            self.rect.y -= 4
+        if keys_pressed[pygame.K_s]:
+            self.rect.y += 4
+        if self.rect.top < 0:
+            self.rect.top = 0
+        if self.rect.bottom > 600:
+            self.rect.bottom = 600
+        if self.rect.right > 600:
+            self.rect.right = 600
+        if self.rect.left < 0:
+            self.rect.left = 0
+        
+
 
 rocket1 = Rocket(0,0)
 GOS = pygame.sprite.Group()
 GOS.add(rocket1)
 
 
-        
 
 
 run = True
 while run == True:
     screen.blit(background, (0, 0))
     GOS.draw(screen)
+    rocket1.move()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+
         
     pygame.display.update()
