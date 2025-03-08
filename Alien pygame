@@ -1,0 +1,17 @@
+import pygame
+screen = pygame.display.set_mode((600, 600))
+TITLE = "Alien in pygame"
+pygame.display.set_caption(TITLE)
+player = pygame.image.load("Alien.png")
+background = pygame.image.load("space.png")
+class Alien(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        super().__init__()
+        self.image = player
+        self.rect =  self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+alien1 = Alien(0,0)
+GOS = pygame.sprite.Group()
+GOS.add(alien1)
