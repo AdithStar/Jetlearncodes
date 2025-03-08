@@ -1,0 +1,19 @@
+import pygame
+screen = pygame.display.set_mode((800, 800))
+TITLE = "Recycling Game"
+pygame.display.set_caption(TITLE)
+binimg = pygame.image.load("trash bin.png")
+lunchbagimg = pygame.image.load("Item 1.png")
+pencilimg = pygame.image.load("Pencil.png")
+boximg = pygame.image.load("Box.png")
+plasticbagimg= pygame.image.load("plastic bag.png")
+background = pygame.image.load("Recycle background.png")
+run = True
+while run == True:
+    screen.blit(background, (0, 0))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+    pygame.display.update()
+    
+
