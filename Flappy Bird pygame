@@ -1,0 +1,29 @@
+import random
+import pygame
+pygame.init()
+floor_x = 0
+screen = pygame.display.set_mode((860,680))
+TITLE = "Flappy Bird"
+pygame.display.set_caption(TITLE)
+Birdwingup = pygame.image.load("Flappy Bird img.png")
+Birdwingsde = pygame.image.load("Flappy bird img1.png")
+Birdwingdown = pygame.image.load("Flappy Bird img2.png")
+background = pygame.image.load("Flappy Bird backroundimg.png")
+floor = pygame.image.load("Flappy Bird floor img.png")
+run = True
+score = 0
+score_font = pygame.font.SysFont("comicsans",20)
+win_font = pygame.font.SysFont("comicsans",80)
+gameover_font = pygame.font.SysFont("comicsans",80)
+
+while run == True:
+    screen.blit(background,(0,0))
+    screen.blit(floor, (floor_x,600))
+    floor_x -= 1
+    if floor_x <= -40:
+        floor_x = 0
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            run = False
+
+    pygame.display.update()
