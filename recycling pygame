@@ -13,6 +13,8 @@ background = pygame.image.load("Recycle background.png")
 run = True
 score = 0
 score_font = pygame.font.SysFont("comicsans",20)
+win_font = pygame.font.SysFont("comicsans",80)
+gameover_font = pygame.font.SysFont("comicsans",80)
 
 
 
@@ -37,8 +39,8 @@ class Bin(pygame.sprite.Sprite):
             self.rect.top = 0
         if self.rect.bottom > 600:
             self.rect.bottom = 600
-        if self.rect.right > 600:
-            self.rect.right = 600
+        if self.rect.right > 800:
+            self.rect.right = 800
         if self.rect.left < 0:
             self.rect.left = 0
 class Recyclableitems(pygame.sprite.Sprite):
@@ -86,8 +88,23 @@ while run == True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+    if pygame.sprite.groupcollide(Bingroup,Rigroup,False,True):
+        score += 1
+    if pygame.sprite.groupcollide(Bingroup,NRIgroup,False,True):
+        score -= 1
+    if score == 10:
+        text1 = win_font.render("You Win!!",True,"black")
+        screen.blit(text1, (300,300))
+        pygame.display.update()
+        pygame.time.delay(3000)
+        pygame.quit()
+    elif score == -10:
+        text2 = gameover_font.render("You Lose",True,"black")
+        screen.blit(text2, (300,300))
+        pygame.display.update()
+        pygame.time.delay(3000)
+        pygame.quit()
+
+
         
     pygame.display.update()
-        
-    
-
