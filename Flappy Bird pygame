@@ -15,15 +15,43 @@ score = 0
 score_font = pygame.font.SysFont("comicsans",20)
 win_font = pygame.font.SysFont("comicsans",80)
 gameover_font = pygame.font.SysFont("comicsans",80)
+gameover = False
+flying = False
+
+class Bird(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        super().__init__()
+        self.index  = 0
+        self.images = [Birdwingup,Birdwingsde,Birdwingdown] 
+        self.image = self.images[self.index] 
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+    def move(self):
+        self.index = self.index+1
+        if self.index == 3:
+            self.index = 0
+        self.image = self.images[self.index] 
+        
+
+flappybird = Bird(100,70)
+GOS = pygame.sprite.Group()
+GOS.add(flappybird)
+
 
 while run == True:
     screen.blit(background,(0,0))
-    screen.blit(floor, (floor_x,600))
-    floor_x -= 1
-    if floor_x <= -40:
-        floor_x = 0
+    screen.blit(floor,(floor_x,600))
+    GOS.draw(screen)
+    if flying == True:
+        flappybird.move()
+        floor_x -= 3
+        if floor_x <= -40:
+            floor_x = 0
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
+        if event.type == pygame.MOUSEBUTTONDOWN and gameover == False and flying == False:
+            flying = True
     pygame.display.update()
