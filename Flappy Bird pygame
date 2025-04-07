@@ -5,6 +5,7 @@ floor_x = 0
 screen = pygame.display.set_mode((860,680))
 TITLE = "Flappy Bird"
 pygame.display.set_caption(TITLE)
+GreenPipe = pygame.image.load("Flappy Bird Pipe img.png")
 Birdwingup = pygame.image.load("Flappy Bird img.png")
 Birdwingsde = pygame.image.load("Flappy bird img1.png")
 Birdwingdown = pygame.image.load("Flappy Bird img2.png")
@@ -17,6 +18,10 @@ win_font = pygame.font.SysFont("comicsans",80)
 gameover_font = pygame.font.SysFont("comicsans",80)
 gameover = False
 flying = False
+passby = False
+frequency = 2000
+last_py = pygame.time.get_ticks() - frequency
+
 
 class Bird(pygame.sprite.Sprite):
     def __init__(self,x,y):
@@ -35,17 +40,43 @@ class Bird(pygame.sprite.Sprite):
         self.image = self.images[self.index] 
         
 
+class Pipe(pygame.sprite.Sprite):
+    def __init__(self,x,y):
+        super().__init__()
+        self.index  = 0
+        self.images = [GreenPipe] 
+        self.image = self.images[self.index] 
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+    def update(self):
+        self.rect.x -= 3
+        if self.rect.x < 0:
+            self.kill()
+
+   
+    
 flappybird = Bird(100,70)
 GOS = pygame.sprite.Group()
 GOS.add(flappybird)
 
 
+GOS1 = pygame.sprite.Group()
+
 while run == True:
     screen.blit(background,(0,0))
+    GOS1.draw(screen)
     screen.blit(floor,(floor_x,600))
     GOS.draw(screen)
     if flying == True:
+        Time_now = pygame.time.get_ticks()
+        if Time_now - last_py >= frequency:
+            GreenPipe = Pipe(860,400)
+            GOS1.add(GreenPipe)
+            last_py = Time_now
+
         flappybird.move()
+        GreenPipe.update()
         floor_x -= 3
         if floor_x <= -40:
             floor_x = 0
