@@ -21,6 +21,9 @@ flying = False
 passby = False
 frequency = 2000
 last_py = pygame.time.get_ticks() - frequency
+score = 0
+score_font = pygame.font.SysFont("comicsans",20)
+pastpipe = False
 
 
 class Bird(pygame.sprite.Sprite):
@@ -34,6 +37,7 @@ class Bird(pygame.sprite.Sprite):
         self.rect.y = y
         self.vel = 0
 
+
     def move(self):
         self.index = self.index+1
         if self.index == 3:
@@ -42,11 +46,14 @@ class Bird(pygame.sprite.Sprite):
         if flying == True:
             key_pressed = pygame.key.get_pressed()
             if key_pressed[pygame.K_SPACE]:
-                self.vel = -10
+                self.vel = -5
+            if self.vel >= 5:
+                self.vel = 5
+
             else:
                 self.vel = self.vel + 0.099
 
-                self.rect.y = self.rect.y + self.vel
+            self.rect.y = self.rect.y + self.vel
                 
 
         
@@ -87,12 +94,16 @@ while run == True:
     if flying == True:
         Time_now = pygame.time.get_ticks()
         if Time_now - last_py >= frequency:
-            GreenPipe = Pipe(860,400,False)
-            GreenPipe2 = Pipe(860,200,True)
+            pipe_height = random.randint(-100,100)
+
+            GreenPipe = Pipe(860,400 + pipe_height,False,)
+            GreenPipe2 = Pipe(860,200 + pipe_height,True)
             GOS1.add(GreenPipe)
             GOS1.add(GreenPipe2)
             last_py = Time_now
-
+            
+        if flappybird.rect.y >= 600:
+            pygame.quit()
         flappybird.move()
         GOS1.update()
         floor_x -= 3
@@ -103,4 +114,17 @@ while run == True:
             run = False
         if event.type == pygame.MOUSEBUTTONDOWN and gameover == False and flying == False:
             flying = True
+    if pygame.sprite.groupcollide(GOS,GOS1,True,False):
+        pygame.quit()
+    if len(GOS1) > 0:
+        if GOS.sprites()[0].rect.left >= GOS1.sprites()[0].rect.left and GOS.sprites()[0].rect.right < GOS1.sprites()[0].rect.right and pastpipe == False:
+            pastpipe = True
+
+        if GOS.sprites()[0].rect.left >= GOS1.sprites()[0].rect.right and pastpipe == True:
+            score += 1
+            pastpipe = False
+        
+    text = score_font.render("Score:"+str(score),True,"red")
+    screen.blit(text, (680,20))
+    
     pygame.display.update()
